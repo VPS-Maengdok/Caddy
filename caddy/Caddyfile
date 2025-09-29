@@ -1,0 +1,13 @@
+# portfolio on :8080
+:80 {
+    root * /srv/portfolio/public
+    php_fastcgi maengdok_php_portfolio:9000
+    file_server
+}
+
+# dcup on :8081
+:81 {
+    root * /srv/dcup/public
+    php_fastcgi maengdok_php_dcup:9000
+    file_server
+}

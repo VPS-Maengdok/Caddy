@@ -1,0 +1,23 @@
+services:
+  caddy:
+    container_name: maengdok_caddy
+    image: caddy:2.10
+    ports:
+      - "8080:80" # Portfolio
+      - "8081:81" # DCUP
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../portfolio/back:/srv/portfolio:ro
+      - ../dcup/back:/srv/dcup:ro
+    networks:
+      - caddy
+      - dcup
+      - portfolio
+
+networks:
+  caddy:
+    external: true
+  dcup:
+    external: true
+  portfolio:
+    external: true
