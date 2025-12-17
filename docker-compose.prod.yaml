@@ -1,0 +1,33 @@
+services:
+  caddy:
+    container_name: maengdok_caddy
+    image: caddy:2.10
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/prod.Caddyfile:ro
+      - portfolio_uploads:/srv/app/public/uploads:ro
+    depends_on:
+      - portfolio
+    networks:
+      - caddy
+      - portfolio
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.portfolio-back.rule=Host(`back.maengdok.fr`)"
+      - "traefik.http.routers.portfolio-back.entrypoints=websecure"
+      - "traefik.http.routers.portfolio-back.tls.certresolver=myresolver"
+      - "traefik.http.services.portfolio-back.loadbalancer.server.port=80"
+
+volumes:
+  portfolio_uploads:
+
+networks:
+  proxy:
+    external: true
+  caddy:
+    external: true
+  dcup:
+    external: true
+  portfolio:
+    external: true
